@@ -18,6 +18,23 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\defines.h" />
+    <ClInclude Include="includes\FSM.h" />
+    <ClInclude Include="includes\releaseHelper.h" />
+    <ClInclude Include="includes\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\esptool_shell.cpp" />
+    <ClCompile Include="source\FSM.cpp" />
+    <ClCompile Include="source\releaseHelper.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="esptool_shell.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\esptool.exe" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -146,22 +163,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="esptool_shell.cpp" />
-    <ClCompile Include="releaseHelper.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="esptool.exe" />
-    <None Include="executab.bin" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="defines.h" />
-    <ClInclude Include="releaseHelper.h" />
-    <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="esptool_shell.rc" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

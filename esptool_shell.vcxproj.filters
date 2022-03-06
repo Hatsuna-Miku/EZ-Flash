@@ -15,33 +15,38 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="esptool_shell.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="releaseHelper.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+    <ClInclude Include="includes\defines.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\FSM.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\releaseHelper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="executab.bin">
-      <Filter>资源文件</Filter>
-    </None>
-    <None Include="esptool.exe" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="releaseHelper.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="defines.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <ClCompile Include="source\esptool_shell.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\FSM.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\releaseHelper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="esptool_shell.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\esptool.exe">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>

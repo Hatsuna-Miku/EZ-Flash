@@ -1,6 +1,0 @@
-ET-A1B(6050) 1.01-a http://www.douzidoge.cn/resources/ET_A1B/firmware-211230.bin 2021/12/30-优化了开机成功率 请注意在串口出现之后及时开始刷机
-ET-A2B+2948 1.01-a http://www.douzidoge.cn/resources/ET_A2B/firmware_ET_A2B_211230.bin 21/12/30-优化了方向混乱问题 请注意在刷机过程中按住电源键
-ED-1+2948 1.0.0 http://www.douzidoge.cn/resources/ED_1/firmware_ED_1+2948_220104.bin 21/12/30-桦板加20948固件 请确保连接稳固
-ED-1+6050 1.0.0 http://www.douzidoge.cn/resources/ED_1/firmware_ED_1+6050_220104.bin 21/12/30-桦板加6050固件 请确保连接稳固
-ED-1+085 1.0.0 http://www.douzidoge.cn/resources/ED_1/firmware_ED_1+085_220104.bin 21/12/30-桦板加085固件 请确保连接稳固
-ET-A2B+6050 0.0.0 http://www.douzidoge.cn/ 22/1/4-仅作为占位用，请勿下载此固件 刷不了的，放心吧
