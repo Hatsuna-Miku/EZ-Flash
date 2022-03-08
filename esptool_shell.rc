@@ -1,6 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "resource.h"
+#include "includes/resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ END
 // EXECUTABLE
 //
 
-IDR_EXECUTABLE2         EXECUTABLE              "esptool.exe"
+IDR_EXECUTABLE2         EXECUTABLE              "resources/esptool.exe"
 
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
