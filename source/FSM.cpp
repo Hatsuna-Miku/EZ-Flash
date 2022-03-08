@@ -185,23 +185,33 @@ namespace fsm
         }
     }
 
-    std::vector<optiontype> listFirmwareInfo(std::vector<devicefwinfo> fwlist)
+    std::vector<optiontype> listFirmwareInfo(std::vector<devicefwinfo> fwlist, cursortype cursor)
     {
         std::vector<optiontype> entrylist;
         std::cout << "固件列表：" << std::endl;
-        int j = 1;
-        for (auto i : fwlist)
+        std::size_t i;
+        for (i = (cursor.page - 1) * 9; (i < fwlist.size()) && i < (cursor.page * 9 - 1); i++)
         {
-            std::cout << j << '\t';
-            std::cout << i.model << "\t";
-            std::cout << i.version << "\t";
-            std::cout << i.description << std::endl;
-            entrylist.push_back({ INCLUDE,0,char(j + 48) });
-            j++;
+            if ((i % 9 + 1) == cursor.option)
+            {
+                //SetConsoleTextAttribute(cursor.hOut, 0xF0);
+            }
+            std::cout << i % 9 + 1 << '\t';
+            std::cout << fwlist[i].model << "\t";
+            std::cout << fwlist[i].version << "\t";
+            std::cout << fwlist[i].description << std::endl;
+            if ((i % 9 + 1) == cursor.option)
+            {
+                //SetConsoleTextAttribute(cursor.hOut, 0x0F);
+            }
+            entrylist.push_back({ INCLUDE,0,char(i % 9 + 49) });
         }
+        std::cout << "第" << int(cursor.page) << "页，共" << int(cursor.allpage) << "页" << std::endl;
         entrylist.push_back({ INCLUDE,0,'r' });
         entrylist.push_back({ INCLUDE,0,'q' });
-        std::cout << "按1~9选择,按r刷新,按q返回上一级：" << std::endl;
+        entrylist.push_back({ INCLUDE,0,'[' });
+        entrylist.push_back({ INCLUDE,0,']' });
+        std::cout << "按1~9选择,按r刷新,[]翻页,按q返回上一级：" << std::endl;
         return entrylist;
     }
 
@@ -425,9 +435,12 @@ int FSM::Advance()
 		case fsm::ONMENU:
 			OnMenu();
 			break;
-		case fsm::GETINTFILE:
+		case fsm::GETINETFILE:
 			GetInetFile();
 			break;
+        case fsm::ONINETFILE:
+            OnInetFile();
+            break;
 		case fsm::ONSETTING:
 			OnSetting();
 			break;
@@ -513,14 +526,22 @@ void FSM::OnMenu()
 
 void FSM::GetInetFile()
 {
-	fsmState = fsm::INETFILE;
-	system("cls");
-	optionlist.clear();
+	fsmState = fsm::GETINET;
+    system("cls");
 	fsm::getUpdateConfig();
 	fwlist = fsm::parseConfig();
-	optionlist = fsm::listFirmwareInfo(fwlist);
-	eventQueue.push(fsm::ONSELECT);
-	eventQueue.push(fsm::RET_INETFILE);
+    cursor.allpage = fwlist.size() / 9 + ((fwlist.size() % 9 != 0) ? 1 : 0);
+    eventQueue.push(fsm::ONINETFILE);
+}
+
+void FSM::OnInetFile()
+{
+    fsmState = fsm::INETFILE;
+    system("cls");
+    optionlist.clear();
+    optionlist = fsm::listFirmwareInfo(fwlist, cursor);
+    eventQueue.push(fsm::ONSELECT);
+    eventQueue.push(fsm::RET_INETFILE);
 }
 
 void FSM::OnSetting()
@@ -531,11 +552,12 @@ void FSM::OnSetting()
 
 void FSM::OnDownload()
 {
+    int target = option - 49 + (cursor.page - 1) * 9;
 	fsmState = fsm::DOWNLOAD;
-	fsm::downloadFile(fwlist[option - 49].url, "FIRMWARE_" + fwlist[option - 49].model + ".bin");
-	flashConfig.filename = "FIRMWARE_" + fwlist[option - 49].model + ".bin";
-    flashnotice = fwlist[option - 49].notice;
-	eventQueue.push(fsm::GETINTFILE);
+	fsm::downloadFile(fwlist[target].url, "FIRMWARE_" + fwlist[target].model + ".bin");
+	flashConfig.filename = "FIRMWARE_" + fwlist[target].model + ".bin";
+    flashnotice = fwlist[target].notice;
+	eventQueue.push(fsm::ONINETFILE);
 }
 
 void FSM::OnConfigure()
@@ -584,7 +606,7 @@ void FSM::RetMenu()
 	switch (option)
 	{
 	case '1':
-		eventQueue.push(fsm::GETINTFILE);
+		eventQueue.push(fsm::GETINETFILE);
 		break;
 	case '2':
 		eventQueue.push(fsm::ONSETTING);
@@ -605,11 +627,25 @@ void FSM::RetInetfile()
 	switch (option)
 	{
 	case 'r':
-		eventQueue.push(fsm::GETINTFILE);
+		eventQueue.push(fsm::GETINETFILE);
 		break;
 	case 'q':
 		eventQueue.push(fsm::ONMENU);
 		break;
+    case '[':
+        if (cursor.page > 1)
+        {
+            cursor.page = cursor.page - 1;
+        }
+        eventQueue.push(fsm::ONINETFILE);
+        break;
+    case ']':
+        if (cursor.page < cursor.allpage)
+        {
+            cursor.page = cursor.page + 1;
+        }
+        eventQueue.push(fsm::ONINETFILE);
+        break;
 	default:
 		eventQueue.push(fsm::ONDOWNLOAD);
 		break;

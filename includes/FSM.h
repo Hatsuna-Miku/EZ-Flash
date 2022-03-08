@@ -33,6 +33,7 @@ namespace fsm
         INITED,
         MENU,
         SETTING,
+        GETINET,
         INETFILE,
         DOWNLOAD,
         CONFIGURE,
@@ -46,7 +47,8 @@ namespace fsm
         ONSTARTUP,
         ONINITED,
         ONMENU,
-        GETINTFILE,
+        GETINETFILE,
+        ONINETFILE,
         ONSETTING,
         ONDOWNLOAD,
         ONCONFIGURE,
@@ -100,6 +102,12 @@ namespace fsm
         char value;
     };
 
+    struct cursortype
+    {
+        HANDLE hOut;
+        uint8_t page, option, allpage;
+    };
+
     /*
     * º¯Êý
     */
@@ -137,6 +145,7 @@ private:
     std::queue <fsm::EVENTS> eventQueue;
     std::vector<fsm::optiontype> optionlist;
     std::vector<fsm::devicefwinfo> fwlist;
+    fsm::cursortype cursor;
     char option;
     std::string flashnotice;
 public:
@@ -145,12 +154,16 @@ public:
         hOut = GetStdHandle(STD_OUTPUT_HANDLE);
         eventQueue.push(fsm::ONSTARTUP);
         option = 0;
+        cursor.hOut = hOut;
+        cursor.page = 1;
+        cursor.option = 1;
     }
     int Advance();
     void OnStartup();
     void OnInited();
     void OnMenu();
     void GetInetFile();
+    void OnInetFile();
     void OnSetting();
     void OnDownload();
     void OnConfigure();
