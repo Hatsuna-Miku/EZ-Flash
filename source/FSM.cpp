@@ -459,6 +459,9 @@ int FSM::Advance()
 		case fsm::RET_CONFIGURE:
 			RetConfigure();
 			break;
+        case fsm::RET_FLASH:
+            RetFlash();
+            break;
 		}
         eventQueue.pop();
 		if (shutdownSignal)
