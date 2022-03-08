@@ -1,5 +1,5 @@
 #pragma once
-#define TOOL_VERSION "0.2.4"
+#define TOOL_VERSION "0.3.0"
 #define AUTHUR "¶¹×ÓDoge"
 #define URL "http://www.douzidoge.cn"
 #define DEVICE_UPDATE_CONF_URL "http://www.douzidoge.cn/deviceupdate/deviceupdateconf"
