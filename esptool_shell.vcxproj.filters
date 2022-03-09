@@ -27,6 +27,9 @@
     <ClInclude Include="includes\resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="includes\languages.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\EZ-Flash.cpp">
@@ -36,6 +39,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="source\releaseHelper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\languages.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -16,6 +16,7 @@
 #include "releaseHelper.h"
 #include <conio.h>
 #include <urlmon.h>
+#include "languages.h"
 
 #pragma comment(lib,"urlmon.lib")
 
@@ -107,26 +108,6 @@ namespace fsm
         HANDLE hOut;
         uint8_t page, option, allpage;
     };
-
-    /*
-    * 函数
-    */
-    char* wideCharToMultiByte(const wchar_t* pWCStrKey);
-    LPCWSTR stringToLPCWSTR(std::string orig);
-    std::vector<serialDev> getComPortList();
-    int downloadFile(std::string url, std::string filename);
-    int exeCmd(flashconf Config);
-    std::vector<optiontype> listCom(std::vector<serialDev> comlist);
-    devicefwinfo parseConfigLine(std::string line);
-    std::vector<devicefwinfo> parseConfig();
-    inline void getUpdateConfig();
-    int releaseExe();
-    std::vector<optiontype> listFirmwareInfo(std::vector<devicefwinfo> fwlist);
-    int getKbdLoop();
-    void cleanFile();
-    int getOption(int setting);//过时的函数
-    char getOption(std::vector<optiontype> options);
-    void printInfo();
 }
 
 /*
@@ -146,6 +127,7 @@ private:
     std::vector<fsm::optiontype> optionlist;
     std::vector<fsm::devicefwinfo> fwlist;
     fsm::cursortype cursor;
+    languages::STR strings;
     char option;
     std::string flashnotice;
 public:
@@ -175,4 +157,24 @@ public:
     void RetSetting();
     void RetConfigure();
     void RetFlash();
+    /*
+    * 函数
+    */
+    char* wideCharToMultiByte(const wchar_t* pWCStrKey);
+    LPCWSTR stringToLPCWSTR(std::string orig);
+    std::vector<fsm::serialDev> getComPortList();
+    int downloadFile(std::string url, std::string filename);
+    int exeCmd(fsm::flashconf Config);
+    std::vector<fsm::optiontype> listCom(std::vector<fsm::serialDev> comlist);
+    fsm::devicefwinfo parseConfigLine(std::string line);
+    std::vector<fsm::devicefwinfo> parseConfig();
+    inline void getUpdateConfig();
+    int releaseExe();
+    std::vector<fsm::optiontype> listFirmwareInfo(std::vector<fsm::devicefwinfo> fwlist, fsm::cursortype cursor);
+    int getKbdLoop();
+    void cleanFile();
+    int getOption(int setting);//过时的函数
+    char getOption(std::vector<fsm::optiontype> options);
+    std::vector<fsm::optiontype> listMenu(std::vector<fsm::menuoption> menulist);
+    void printInfo();
 };

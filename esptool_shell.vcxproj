@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClInclude Include="includes\defines.h" />
     <ClInclude Include="includes\FSM.h" />
+    <ClInclude Include="includes\languages.h" />
     <ClInclude Include="includes\releaseHelper.h" />
     <ClInclude Include="includes\resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\EZ-Flash.cpp" />
     <ClCompile Include="source\FSM.cpp" />
+    <ClCompile Include="source\languages.cpp" />
     <ClCompile Include="source\releaseHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
