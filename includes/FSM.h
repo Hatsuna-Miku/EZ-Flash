@@ -128,6 +128,7 @@ private:
     std::vector<fsm::devicefwinfo> fwlist;
     fsm::cursortype cursor;
     languages::STR strings;
+    unsigned short lang;
     char option;
     std::string flashnotice;
 public:

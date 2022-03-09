@@ -109,7 +109,7 @@ int FSM::exeCmd(fsm::flashconf Config)
 std::vector<fsm::optiontype> FSM::listCom(std::vector<fsm::serialDev> comlist)
 {
     std::vector<fsm::optiontype> entrylist;
-    std::cout << "串口列表:" << std::endl;
+    std::cout << strings.serlist_serlist << std::endl;
     int j = 1;
     for (auto i : comlist)
     {
@@ -121,7 +121,7 @@ std::vector<fsm::optiontype> FSM::listCom(std::vector<fsm::serialDev> comlist)
     }
     entrylist.push_back({ fsm::INCLUDE,0,'r' });
     entrylist.push_back({ fsm::INCLUDE,0,'q' });
-    std::cout << "按1~9选择,按r刷新,按q返回上一级：" << std::endl;
+    std::cout << strings.serlist_menunotice << std::endl;
     return entrylist;
 }
 
@@ -155,7 +155,7 @@ std::vector<fsm::devicefwinfo> FSM::parseConfig()
 
 inline void FSM::getUpdateConfig()
 {
-    std::cout << "正在从服务器获取固件列表。。。" << std::endl;
+    std::cout << strings.getinet_fetchingfilelist << std::endl;
     downloadFile(DEVICE_UPDATE_CONF_URL, DEVICE_UPDATE_CONF);
     /*
     while (!downloadFile(DEVICE_UPDATE_CONF_URL, DEVICE_UPDATE_CONF))
@@ -185,7 +185,7 @@ int FSM::releaseExe()
 std::vector<fsm::optiontype> FSM::listFirmwareInfo(std::vector<fsm::devicefwinfo> fwlist, fsm::cursortype cursor)
 {
     std::vector<fsm::optiontype> entrylist;
-    std::cout << "固件列表：" << std::endl;
+    std::cout << strings.inetfile_filelist << std::endl;
     std::size_t i;
     for (i = (cursor.page - 1) * 9; (i < fwlist.size()) && i < (cursor.page * 9 - 1); i++)
     {
@@ -203,12 +203,12 @@ std::vector<fsm::optiontype> FSM::listFirmwareInfo(std::vector<fsm::devicefwinfo
         }
         entrylist.push_back({ fsm::INCLUDE,0,char(i % 9 + 49) });
     }
-    std::cout << "第" << int(cursor.page) << "页，共" << int(cursor.allpage) << "页" << std::endl;
+    std::cout << languages::pageindicator(lang, cursor.page, cursor.allpage) << std::endl;
     entrylist.push_back({ fsm::INCLUDE,0,'r' });
     entrylist.push_back({ fsm::INCLUDE,0,'q' });
     entrylist.push_back({ fsm::INCLUDE,0,'[' });
     entrylist.push_back({ fsm::INCLUDE,0,']' });
-    std::cout << "按1~9选择,按r刷新,[]翻页,按q返回上一级：" << std::endl;
+    std::cout << strings.inetfile_notice << std::endl;
     return entrylist;
 }
 
@@ -490,7 +490,7 @@ void FSM::OnStartup()
 	fsmState = fsm::STARTUP;
 	printInfo();
     LCID localeID = GetUserDefaultLCID();
-    unsigned short lang = localeID & 0xFF;
+    lang = localeID && 0xFF;
     strings = languages::loadstring(lang);
     menulist.clear();
 	menulist.push_back({ '1',strings.menu_option_download,strings.menu_option_download_description });

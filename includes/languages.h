@@ -25,6 +25,6 @@ namespace languages
 			flash_notice,
 			flash_optionnotice;
 	};
-	std::string pageindecator(unsigned short language, uint8_t currentpage, uint8_t allpage);
+	std::string pageindicator(unsigned short language, uint8_t currentpage, uint8_t allpage);
 	STR loadstring(unsigned short language);
 }
