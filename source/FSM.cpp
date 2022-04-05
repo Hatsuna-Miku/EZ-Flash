@@ -203,7 +203,7 @@ std::vector<fsm::optiontype> FSM::listFirmwareInfo(std::vector<fsm::devicefwinfo
         }
         entrylist.push_back({ fsm::INCLUDE,0,char(i % 9 + 49) });
     }
-    std::cout << languages::pageindicator(lang, cursor.page, cursor.allpage) << std::endl;
+    std::cout << languages::pageindicator(settings.language, cursor.page, cursor.allpage) << std::endl;
     entrylist.push_back({ fsm::INCLUDE,0,'r' });
     entrylist.push_back({ fsm::INCLUDE,0,'q' });
     entrylist.push_back({ fsm::INCLUDE,0,'[' });
@@ -415,6 +415,111 @@ std::vector<fsm::optiontype> FSM::listMenu(std::vector<fsm::menuoption> menulist
     return optionlist;
 }
 
+int FSM::readSettings()
+{
+    settings.language = DEFAULT_LANGUAGE;
+    settings.flashspeed = DEFAULT_FLASHSPEED;
+    std::string fileline;
+    std::fstream settingfile(SETTING_INI_PATH);
+    if (!settingfile.is_open())
+    {
+        return -1;
+    }
+    while (getline(settingfile, fileline))
+    {
+        std::istringstream pieces(fileline);
+        std::string name, value;
+        pieces >> name;
+        pieces >> value;
+        if (name == "Language")
+        {
+            if (value == "Chinese")
+            {
+                settings.language = LANG_CHINESE;
+            }
+            else if (value == "Russian")
+            {
+                settings.language = LANG_RUSSIAN;
+            }
+            else if (value == "English")
+            {
+                settings.language = LANG_ENGLISH;
+            }
+            else if (value == "Japanese")
+            {
+                settings.language = LANG_JAPANESE;
+            }
+            else
+            {
+                LCID localeID = GetUserDefaultLCID();
+                settings.language = localeID && 0xFF;
+            }
+        }
+        else if (name == "Flashspeed")
+        {
+            if (value == "High")
+            {
+                settings.flashspeed = "921600";
+            }
+            else if (value == "Low")
+            {
+                settings.flashspeed = "115200";
+            }
+            else
+            {
+                settings.flashspeed = "921600";
+            }
+        }
+    }
+    settingfile.close();
+    return 0;
+}
+
+int FSM::writeSettings()
+{
+    std::fstream settingfile(SETTING_INI_PATH, std::ios::out | std::ios::trunc);
+    if (settingfile.is_open())
+    {
+        settingfile << "Language ";
+        switch (settings.language)
+        {
+        case LANG_CHINESE:
+            settingfile << "Chinese" << std::endl;
+            break;
+        case LANG_RUSSIAN:
+            settingfile << "Russian" << std::endl;
+            break;
+        case LANG_ENGLISH:
+            settingfile << "English" << std::endl;
+            break;
+        case LANG_JAPANESE:
+            settingfile << "Japanese" << std::endl;
+            break;
+        default:
+            settingfile << "Chinese" << std::endl;
+            break;
+        }
+        settingfile << "Flashspeed ";
+        if (settings.flashspeed == "921600")
+        {
+            settingfile << "High" << std::endl;
+        }
+        else if (settings.flashspeed == "115200")
+        {
+            settingfile << "LOW" << std::endl;
+        }
+        else
+        {
+            settingfile << "High" << std::endl;
+        }
+    }
+    else
+    {
+        return -1;
+    }
+    settingfile.close();
+    return 0;
+}
 
 int FSM::Advance()
 {
@@ -489,9 +594,8 @@ void FSM::OnStartup()
 {
 	fsmState = fsm::STARTUP;
 	printInfo();
-    LCID localeID = GetUserDefaultLCID();
-    lang = localeID && 0xFF;
-    strings = languages::loadstring(lang);
+    readSettings();
+    strings = languages::loadstring(settings.language);
     menulist.clear();
 	menulist.push_back({ '1',strings.menu_option_download,strings.menu_option_download_description });
 	menulist.push_back({ '2',strings.menu_option_settings,strings.menu_option_settings_description });
@@ -546,6 +650,8 @@ void FSM::OnInetFile()
 void FSM::OnSetting()
 {
 	fsmState = fsm::SETTING;
+    writeSettings();
+    readSettings();
 	eventQueue.push(fsm::ONMENU);
 }
 

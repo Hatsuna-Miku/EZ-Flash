@@ -108,6 +108,13 @@ namespace fsm
         HANDLE hOut;
         uint8_t page, option, allpage;
     };
+
+    struct settingtype
+    {
+        unsigned short language;
+        std::string flashspeed;
+    };
+
 }
 
 /*
@@ -128,9 +135,10 @@ private:
     std::vector<fsm::devicefwinfo> fwlist;
     fsm::cursortype cursor;
     languages::STR strings;
-    unsigned short lang;
     char option;
     std::string flashnotice;
+    fsm::settingtype settings;
+    int dbgflag;
 public:
     FSM()
     {
@@ -178,4 +186,6 @@ public:
     char getOption(std::vector<fsm::optiontype> options);
     std::vector<fsm::optiontype> listMenu(std::vector<fsm::menuoption> menulist);
     void printInfo();
+    int readSettings();
+    int writeSettings();
 };
